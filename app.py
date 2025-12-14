@@ -8,7 +8,13 @@ API_KEY = "20689da8b5f883002cfab7cba8504228"
 
 # Load artifacts
 movies = pickle.load(open("artifacts/movie_list.pkl", "rb"))
-similarity = pickle.load(open("artifacts/similarity.pkl", "rb"))
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+cv = CountVectorizer(max_features=5000, stop_words='english')
+vectors = cv.fit_transform(movies['tags']).toarray()
+similarity = cosine_similarity(vectors)
+
 
 # Debug text (MUST SHOW)
 st.write("Movies loaded:", movies.shape)
